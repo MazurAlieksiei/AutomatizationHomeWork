@@ -5,6 +5,7 @@ import org.atmtask.Atm;
 import org.atmtask.cards.Card;
 import org.atmtask.cards.CreditCard;
 import org.atmtask.cards.DebitCard;
+import org.atmtask.exeption.CashWithdrawalException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -32,15 +33,16 @@ public class AtmTests {
         Card card1 = new DebitCard("Lena", 1000);
         Atm atm = new Atm();
         atm.insertCard(card1);
-        Assertions.assertEquals("100", atm.withdrawal(900));
+        var result = Assertions.assertDoesNotThrow(() -> atm.withdrawal(900));
+        Assertions.assertEquals("100", result);
     }
 
     @Test
-    public void testWithdrawalMoreThenAvailableDebitCard() {
+    public void testWithdrawalMoreThenAvailableThrowsExceptionDebitCard() {
         Card card1 = new DebitCard("Lena", 1000);
         Atm atm = new Atm();
         atm.insertCard(card1);
-        Assertions.assertEquals("Not allowed", atm.withdrawal(1001));
+        Assertions.assertThrows(CashWithdrawalException.class, () -> atm.withdrawal(1001));
     }
 
     @Test
@@ -48,7 +50,8 @@ public class AtmTests {
         Card card1 = new CreditCard("Lena", 1000);
         Atm atm = new Atm();
         atm.insertCard(card1);
-        Assertions.assertEquals("100", atm.withdrawal(900));
+        var result = Assertions.assertDoesNotThrow(() -> atm.withdrawal(900));
+        Assertions.assertEquals("100", result);
     }
 
     @Test
@@ -56,7 +59,8 @@ public class AtmTests {
         Card card1 = new CreditCard("Lena", 1000);
         Atm atm = new Atm();
         atm.insertCard(card1);
-        Assertions.assertEquals("-1", atm.withdrawal(1001));
+        var result = Assertions.assertDoesNotThrow(() -> atm.withdrawal(1001));
+        Assertions.assertEquals("-1", result);
     }
 }
 

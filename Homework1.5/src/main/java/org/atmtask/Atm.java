@@ -2,6 +2,7 @@ package org.atmtask;
 
 
 import org.atmtask.cards.Card;
+import org.atmtask.exeption.CashWithdrawalException;
 
 public class Atm {
 
@@ -17,7 +18,7 @@ public class Atm {
      * @param amount Сумма, которая снимается со счета.
      * @return Возвращает
      */
-    public String withdrawal(long amount) {
+    public String withdrawal(long amount) throws CashWithdrawalException {
         return card.decreaseBalance(amount);
     }
 

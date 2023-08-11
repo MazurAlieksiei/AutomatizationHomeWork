@@ -1,5 +1,7 @@
 package org.atmtask.cards;
 
+import org.atmtask.exeption.CashWithdrawalException;
+
 public class DebitCard extends Card {
 
     public DebitCard(String cardHolderName, long balance) {
@@ -18,9 +20,9 @@ public class DebitCard extends Card {
      * Возвращает баланс, уменьшенный на quantity.
      */
     @Override
-    public String decreaseBalance(long quantity) {
+    public String decreaseBalance(long quantity) throws CashWithdrawalException {
         if ((getBalance() - quantity) < 0) {
-            return "Not allowed";
+            throw new CashWithdrawalException();
         }
         return super.decreaseBalance(quantity);
     }

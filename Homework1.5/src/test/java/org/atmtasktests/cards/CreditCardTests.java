@@ -25,7 +25,8 @@ public class CreditCardTests {
     @CsvSource({"1500, 500", "2010, -10"})
     public void testDecreaseBalance(long quantity, String expected) {
         Card card = new CreditCard("Alex", 2000);
-        Assertions.assertEquals(expected, card.decreaseBalance(quantity));
+        var result = Assertions.assertDoesNotThrow(() -> card.decreaseBalance(quantity));
+        Assertions.assertEquals(expected, result);
     }
 
     @ParameterizedTest

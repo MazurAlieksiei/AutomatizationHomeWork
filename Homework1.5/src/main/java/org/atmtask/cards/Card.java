@@ -1,5 +1,7 @@
 package org.atmtask.cards;
 
+import org.atmtask.exeption.CashWithdrawalException;
+
 public abstract class Card {
 
     private String cardHolderName;
@@ -36,7 +38,7 @@ public abstract class Card {
      *
      * @param quantity Число, на которое уменьшается баланс.
      */
-    public String decreaseBalance(long quantity) {
+    public String decreaseBalance(long quantity) throws CashWithdrawalException {
         return String.valueOf(this.balance -= quantity);
     }
 

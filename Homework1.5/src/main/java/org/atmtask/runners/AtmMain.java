@@ -4,6 +4,7 @@ package org.atmtask.runners;
 import org.atmtask.Atm;
 import org.atmtask.cards.Card;
 import org.atmtask.cards.DebitCard;
+import org.atmtask.exeption.CashWithdrawalException;
 
 import java.util.Scanner;
 
@@ -43,10 +44,22 @@ public class AtmMain {
                     }
 
                     if (card instanceof DebitCard) {
-                        atm.withdrawal(amountToWithdrawal);
-                        System.out.println("Current Account balance: " + atm.getBalance());
+
+                        try {
+                            atm.withdrawal(amountToWithdrawal);
+                            System.out.println("Current Account balance: " + atm.getBalance());
+                        } catch (CashWithdrawalException exception) {
+                            System.out.println("Not allowed!");
+                            System.out.println("Current Account balance: " + atm.getBalance());
+                        }
+
                     } else {
-                        atm.withdrawal(amountToWithdrawal);
+
+                        try {
+                            atm.withdrawal(amountToWithdrawal);
+                        } catch (CashWithdrawalException e) {
+                            throw new RuntimeException(e);
+                        }
                         System.out.println("Current Account balance: " + atm.getBalance());
                     }
                     break;
