@@ -6,7 +6,7 @@ import org.atmtask.exeption.CashWithdrawalException;
 
 public class Atm {
 
-    public Card card;
+    private Card card;
 
     public void insertCard(Card card) {
         this.card = card;
