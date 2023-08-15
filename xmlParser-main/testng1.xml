@@ -1,0 +1,15 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd" >
+
+<suite name="Suite1" verbose="1" >
+    <test name="Parser tests" >
+        <groups>
+            <run>
+                <exclude name="valid xml"  />
+                <include name="invalid xml"  />
+            </run>
+        </groups>
+        <packages>
+            <package name="parsertests" />
+        </packages>
+    </test>
+</suite>
