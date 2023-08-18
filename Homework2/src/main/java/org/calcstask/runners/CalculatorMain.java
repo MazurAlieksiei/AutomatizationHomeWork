@@ -1,7 +1,7 @@
 package org.calcstask.runners;
 
 import org.calcstask.CalculatorWithMemory;
-import org.calcstask.Utils.StringUtils;
+import org.calcstask.utils.StringUtils;
 
 import java.util.Scanner;
 
@@ -35,8 +35,8 @@ public class CalculatorMain {
             System.out.println("What operation need to be done? Please, enter div, multi, minus or add.");
 
             String operationToDo = in.nextLine();
-            double firstNumber = StringUtils.passingOfInputStrings(firstNumberAsString);
-            double secondNumber = StringUtils.passingOfInputStrings(secondNumberAsString);
+            double firstNumber = StringUtils.parsingOfInputStrings(firstNumberAsString);
+            double secondNumber = StringUtils.parsingOfInputStrings(secondNumberAsString);
 
             switch (operationToDo) {
                 case "div":

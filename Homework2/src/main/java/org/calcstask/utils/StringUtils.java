@@ -1,4 +1,4 @@
-package org.calcstask.Utils;
+package org.calcstask.utils;
 
 public class StringUtils {
 
@@ -13,7 +13,8 @@ public class StringUtils {
             return false;
         }
         if (!consoleInput.chars().allMatch(Character::isDigit)) {
-            if (consoleInput.chars().filter(ch -> ch == '.').count() == 1) {
+            if (consoleInput.chars().filter(ch -> ch == '.').count() == 1 ||
+                    (consoleInput.startsWith("-") && consoleInput.chars().filter(ch -> ch == '-').count() == 1)) {
                 return true;
             }
             return false;
@@ -27,7 +28,7 @@ public class StringUtils {
      * @param numberAsString Число, введенное пользователем как строка.
      * @return Возвращает число типа double.
      */
-    public static double passingOfInputStrings(String numberAsString) {
+    public static double parsingOfInputStrings(String numberAsString) {
         return Double.parseDouble(numberAsString);
     }
 }

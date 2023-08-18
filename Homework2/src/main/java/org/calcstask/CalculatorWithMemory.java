@@ -1,6 +1,8 @@
 package org.calcstask;
 
 
+import org.calcstask.utils.StringUtils;
+
 public class CalculatorWithMemory {
 
     private double lastOperationResult;
@@ -23,6 +25,38 @@ public class CalculatorWithMemory {
         return lastOperationResult;
     }
 
+    public double division(String firstNumber, String secondNumber) {
+        if (!(isStringValid(firstNumber) && isStringValid(secondNumber))) {
+            throw new IllegalArgumentException();
+        }
+
+        double firstNumberParsed = StringUtils.parsingOfInputStrings(firstNumber);
+        double secondNumberParsed = StringUtils.parsingOfInputStrings(secondNumber);
+        if (secondNumberParsed == 0) {
+            throw new ArithmeticException("You can't divide by zero!");
+        }
+        lastOperationResult = firstNumberParsed / secondNumberParsed;
+        return lastOperationResult;
+    }
+
+    public double division(int firstNumber, int secondNumber) {
+
+        if (secondNumber == 0) {
+            throw new ArithmeticException("You can't divide by zero!");
+        }
+        lastOperationResult = firstNumber / secondNumber;
+        return lastOperationResult;
+    }
+
+    public double division(long firstNumber, long secondNumber) {
+
+        if (secondNumber == 0) {
+            throw new ArithmeticException("You can't divide by zero!");
+        }
+        lastOperationResult = firstNumber / secondNumber;
+        return lastOperationResult;
+    }
+
     /**
      * Метод умножения чисел.
      *
@@ -31,6 +65,27 @@ public class CalculatorWithMemory {
      * @return Возвращает результат умножения чисел.
      */
     public double multiplication(double firstNumber, double secondNumber) {
+        lastOperationResult = firstNumber * secondNumber;
+        return lastOperationResult;
+    }
+
+    public double multiplication(String firstNumber, String secondNumber) {
+        if (!(isStringValid(firstNumber) && isStringValid(secondNumber))) {
+            throw new IllegalArgumentException();
+        }
+
+        double firstNumberParsed = StringUtils.parsingOfInputStrings(firstNumber);
+        double secondNumberParsed = StringUtils.parsingOfInputStrings(secondNumber);
+        lastOperationResult = firstNumberParsed * secondNumberParsed;
+        return lastOperationResult;
+    }
+
+    public double multiplication(int firstNumber, int secondNumber) {
+        lastOperationResult = firstNumber * secondNumber;
+        return lastOperationResult;
+    }
+
+    public double multiplication(long firstNumber, long secondNumber) {
         lastOperationResult = firstNumber * secondNumber;
         return lastOperationResult;
     }
@@ -47,6 +102,27 @@ public class CalculatorWithMemory {
         return lastOperationResult;
     }
 
+    public double minus(String firstNumber, String secondNumber) {
+        if (!(isStringValid(firstNumber) && isStringValid(secondNumber))) {
+            throw new IllegalArgumentException();
+        }
+
+        double firstNumberParsed = StringUtils.parsingOfInputStrings(firstNumber);
+        double secondNumberParsed = StringUtils.parsingOfInputStrings(secondNumber);
+        lastOperationResult = firstNumberParsed - secondNumberParsed;
+        return lastOperationResult;
+    }
+
+    public double minus(int firstNumber, int secondNumber) {
+        lastOperationResult = firstNumber - secondNumber;
+        return lastOperationResult;
+    }
+
+    public double minus(long firstNumber, long secondNumber) {
+        lastOperationResult = firstNumber - secondNumber;
+        return lastOperationResult;
+    }
+
     /**
      * Метод сложения чисел.
      *
@@ -58,6 +134,28 @@ public class CalculatorWithMemory {
         lastOperationResult = firstNumber + secondNumber;
         return lastOperationResult;
     }
+
+    public double adding(String firstNumber, String secondNumber) {
+        if (!(isStringValid(firstNumber) && isStringValid(secondNumber))) {
+            throw new IllegalArgumentException();
+        }
+
+        double firstNumberParsed = StringUtils.parsingOfInputStrings(firstNumber);
+        double secondNumberParsed = StringUtils.parsingOfInputStrings(secondNumber);
+        lastOperationResult = firstNumberParsed + secondNumberParsed;
+        return lastOperationResult;
+    }
+
+    public double adding(int firstNumber, int secondNumber) {
+        lastOperationResult = firstNumber + secondNumber;
+        return lastOperationResult;
+    }
+
+    public double adding(long firstNumber, long secondNumber) {
+        lastOperationResult = firstNumber + secondNumber;
+        return lastOperationResult;
+    }
+
 
     /**
      * Метод сохранения результата вычислений.
@@ -75,5 +173,13 @@ public class CalculatorWithMemory {
         double temp = savedOperationResult;
         savedOperationResult = 0;
         return temp;
+    }
+
+    private boolean isStringValid(String numberInput) {
+        if (StringUtils.isInputNumberCorrect(numberInput)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }
