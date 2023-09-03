@@ -5,10 +5,8 @@ import org.openqa.selenium.logging.LogEntry;
 import org.webdriver.onliner.enums.BrowserType;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.OpenOption;
 import java.nio.file.StandardOpenOption;
 import java.text.SimpleDateFormat;
 import java.util.Date;

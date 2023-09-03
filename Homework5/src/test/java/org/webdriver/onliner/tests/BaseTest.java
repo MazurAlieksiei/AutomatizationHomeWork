@@ -1,6 +1,5 @@
 package org.webdriver.onliner.tests;
 
-import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.webdriver.onliner.utility.Browser;

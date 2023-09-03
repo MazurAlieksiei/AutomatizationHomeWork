@@ -6,7 +6,6 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.webdriver.onliner.elements.FilterForm;
 import org.webdriver.onliner.elements.ProductCardForm;
-import org.webdriver.onliner.enums.TopMenuItem;
 import org.webdriver.onliner.utility.Browser;
 
 import java.util.ArrayList;

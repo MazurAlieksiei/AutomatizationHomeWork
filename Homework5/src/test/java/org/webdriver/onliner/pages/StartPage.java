@@ -2,7 +2,6 @@ package org.webdriver.onliner.pages;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.NoSuchElementException;
-import org.openqa.selenium.WebElement;
 import org.webdriver.onliner.elements.QuickNavigationForm;
 import org.webdriver.onliner.utility.Browser;
 
