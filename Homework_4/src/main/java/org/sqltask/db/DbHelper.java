@@ -9,27 +9,38 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import static org.sqltask.utils.FileUtils.readFromFile;
+
 public class DbHelper {
 
     private Statement statement;
 
     /**
-     * Метод создание таблиц в базе данных.
-     *
-     * @throws SQLException
-     */
-    public void createTables() throws SQLException {
-        statement = DbProvider.getConnection().createStatement();
+     * Метод создания таблиц в базе данных.
+      */
+    public void createTables() {
+        try {
+            statement = DbProvider.getConnection().createStatement();
+            statement.executeUpdate(readFromFile("tables.sql"));
 
-        statement.executeUpdate("CREATE TABLE  IF NOT EXISTS Users (userId	INTEGER PRIMARY KEY AUTOINCREMENT, name varchar(50) NOT NULL," +
-                        "address varchar(255) NOT NULL);");
-        statement.executeUpdate("CREATE TABLE  IF NOT EXISTS Accounts (accountId INTEGER PRIMARY KEY AUTOINCREMENT, userId INTEGER(10) NOT NULL," +
-                "balance decimal (50) NOT NULL CHECK (balance >= 0 AND balance <= 2000000000), " +
-                "currency varchar(255) NOT NULL, FOREIGN KEY(userId) REFERENCES Users(userId));");
-        statement.executeUpdate("CREATE TABLE  IF NOT EXISTS Transactions (transactionId INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                "accountId INTEGER(10) NOT NULL, amount decimal (15) NOT NULL CHECK (amount <= 1000000000), " +
-                "FOREIGN KEY(accountId) REFERENCES Accounts (accountId));");
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+
+        } finally {
+
+            try {
+
+                if(statement!=null){
+                    statement.close();
+                }
+
+            } catch (SQLException e) {
+                System.out.println("Cant close connection");
+            }
+        }
     }
+
+
 
     public void addUser(User user) {
         try (PreparedStatement statement = DbProvider.getConnection().prepareStatement((

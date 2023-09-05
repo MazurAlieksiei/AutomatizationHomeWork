@@ -1,6 +1,7 @@
 package org.sqltask.runners;
 
 import org.sqltask.Service;
+import org.sqltask.db.DbCreator;
 import org.sqltask.db.DbHelper;
 import org.sqltask.models.Account;
 import org.sqltask.models.User;
@@ -11,14 +12,11 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
+
         DbHelper helper = new DbHelper();
         Service service = new Service(helper);
 
-        try {
-            helper.createTables();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+        helper.createTables();
 
         while (true) {
             Scanner in = new Scanner(System.in);
