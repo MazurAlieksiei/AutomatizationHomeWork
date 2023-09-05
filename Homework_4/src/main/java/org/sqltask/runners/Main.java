@@ -1,13 +1,11 @@
 package org.sqltask.runners;
 
 import org.sqltask.Service;
-import org.sqltask.db.DbCreator;
 import org.sqltask.db.DbHelper;
 import org.sqltask.models.Account;
 import org.sqltask.models.User;
 
 import java.security.InvalidParameterException;
-import java.sql.SQLException;
 import java.util.Scanner;
 
 public class Main {
