@@ -1,11 +1,8 @@
 package org.selenidetask.elements;
 
-import com.codeborne.selenide.Condition;
-import com.codeborne.selenide.Selenide;
 import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.By;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import static com.codeborne.selenide.Selenide.$x;
@@ -13,8 +10,6 @@ import static com.codeborne.selenide.Selenide.$x;
 public class QuickNavigationForm {
 
     private static final SelenideElement  catalogQuickNavigationLocator = $x("//ul[@class='catalog-navigation-classifier ']");
-
-   // private String sectionLocator = ".//li//span[contains(text(),'%s')]";
 
     private String sectionTitleLocator = ".//*[contains(@class,'tem-title-wrapper')]";
 
@@ -33,11 +28,11 @@ public class QuickNavigationForm {
        }
 
     private SelenideElement getQuickNavigationElement(String navigationText){
-        List<SelenideElement> elements = new ArrayList<>();
+        List<SelenideElement> elements;
         elements = catalogQuickNavigationLocator.$$(By.xpath(sectionTitleLocator));
         for (SelenideElement element : elements) {
-            String test = element.getText();
-            if (test.equals(navigationText)){
+            String texts = element.getText();
+            if (texts.equals(navigationText)){
                 return element;
             }
         }

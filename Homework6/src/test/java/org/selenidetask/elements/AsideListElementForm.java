@@ -5,7 +5,6 @@ import com.codeborne.selenide.SelenideElement;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.codeborne.selenide.Selenide.$$;
 import static com.codeborne.selenide.Selenide.$$x;
 
 public class AsideListElementForm {
@@ -34,7 +33,7 @@ public class AsideListElementForm {
     }
 
     public List<String> getAsideListElementDropdownDescriptions() {
-        List<SelenideElement> elements = new ArrayList<>();
+        List<SelenideElement> elements;
         elements = $$x(asideListElementDropdownDescriptionLocator);
 
         List<String> descriptions = new ArrayList<>();
@@ -45,7 +44,7 @@ public class AsideListElementForm {
     }
 
     public List<String> getAsideListElementTitles() {
-        List<SelenideElement> elements = new ArrayList<>();
+        List<SelenideElement> elements;
         elements = $$x(getAsideListElementDropdownTitleLocator);
 
         List<String> titles = new ArrayList<>();

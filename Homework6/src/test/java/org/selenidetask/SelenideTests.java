@@ -5,12 +5,11 @@ import com.codeborne.selenide.WebDriverRunner;
 import org.selenidetask.elements.CatalogNavigationListForm;
 import org.selenidetask.elements.QuickNavigationForm;
 import org.testng.Assert;
-import org.testng.AssertJUnit;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
-import org.testng.asserts.Assertion;
+import org.testng.asserts.SoftAssert;
 
 import java.util.Arrays;
 import java.util.List;
@@ -56,38 +55,51 @@ public class SelenideTests {
                 {"Еда", false}
         };
     }
-    @Test(dataProvider = "sectionsNames", groups = "firstCase")
+    @Test(dataProvider = "sectionsNames", priority = 1)
     public void testCatalogSelectionsPresence (String sectionName, boolean expected) {
         open("https://catalog.onliner.by/");
-        Assert.assertEquals(quickNavigationForm.isItemExist(sectionName),expected) ;
+        Assert.assertEquals(quickNavigationForm.isItemExist(sectionName),expected, "No such element " + sectionName + " exist.") ;
     }
 
-    @Test
+    @Test(priority = 2)
     public void testVerticalSectionsPresence () {
+        SoftAssert softAssert = new SoftAssert();
         open("https://catalog.onliner.by/");
         quickNavigationForm.clickOnItem("Компьютеры и сети");
-        Assert.assertTrue(catalogNavigationListForm.isAsideListDisplayed());
+        softAssert.assertTrue(catalogNavigationListForm.isAsideListDisplayed(), "Aside list is not displayed.");
 
         for (String elementName : asideListElementsName) {
-            Assert.assertTrue(catalogNavigationListForm.getAsideListElementForm().isAsideListElementDisplayed(elementName));
+            softAssert.assertTrue(catalogNavigationListForm.getAsideListElementForm().isAsideListElementDisplayed(elementName),
+                    elementName + " is not displayed");
         }
+
+        softAssert.assertAll();
     }
 
 
-    @Test
+    @Test(priority = 3)
     public void testAsideListElementsContainsPriceAndCount() {
+        SoftAssert softAssert = new SoftAssert();
         open("https://catalog.onliner.by/");
         quickNavigationForm.clickOnItem("Компьютеры и сети");
-        Assert.assertTrue(catalogNavigationListForm.isAsideListDisplayed());
-        Assert.assertTrue(catalogNavigationListForm.getAsideListElementForm().isAsideListElementDisplayed("Комплектующие"));
+        softAssert.assertTrue(catalogNavigationListForm.isAsideListDisplayed(), "Aside list is not displayed.");
+        softAssert.assertTrue(catalogNavigationListForm.getAsideListElementForm()
+                        .isAsideListElementDisplayed("Комплектующие"),asideListElementsName + " is not displayed.");
         catalogNavigationListForm.getAsideListElementForm().clickOnAsideListElement("Комплектующие");
         List<String> descriptions = catalogNavigationListForm.getAsideListElementForm().getAsideListElementDropdownDescriptions();
         List<String> titles = catalogNavigationListForm.getAsideListElementForm().getAsideListElementTitles();
-        Assert.assertTrue(isNotBlank(descriptions));
-        Assert.assertTrue(isNotBlank(titles));
+        softAssert.assertTrue(isNotBlank(descriptions), "Description of elements is blank.");
+        softAssert.assertTrue(isNotBlank(titles), "Titles of elements is blank.");
 
+        softAssert.assertAll();
     }
 
+    /**
+     * Метод проверки наличия элементов массива.
+     *
+     * @param elements Массив(лист) строк.
+     * @return Возвращает true, если элемент в массиве не isBlank, иначе возвращает false.
+     */
     private boolean isNotBlank(List<String> elements) {
         for (String element : elements) {
             if (element.isBlank()) {
