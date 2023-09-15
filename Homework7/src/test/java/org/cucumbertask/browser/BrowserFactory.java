@@ -25,17 +25,14 @@ public class BrowserFactory {
         WebDriver driver;
         switch (browserType) {
             case CHROME:
-                //ChromeOptions chromeOptions = new ChromeOptions();
-                DesiredCapabilities desiredCapabilities = DesiredCapabilities.chrome();
+                ChromeOptions chromeOptions = new ChromeOptions();
 
                 if (isLogsEnabled) {
                     LoggingPreferences preferences = new LoggingPreferences();
                     preferences.enable(LogType.BROWSER, Level.ALL);
-                    desiredCapabilities.setCapability(CapabilityType.LOGGING_PREFS, preferences);
-                    //chromeOptions.setCapability(CapabilityType.LOGGING_PREFS, preferences);
+                    chromeOptions.setCapability(CapabilityType.LOGGING_PREFS, preferences);
                 }
-                driver = new ChromeDriver(desiredCapabilities);
-                //driver = new ChromeDriver(chromeOptions);
+                driver = new ChromeDriver(chromeOptions);
                 break;
             case FIREFOX:
                 driver = new FirefoxDriver();
