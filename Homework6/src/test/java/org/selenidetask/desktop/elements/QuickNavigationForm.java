@@ -1,4 +1,4 @@
-package org.selenidetask.elements;
+package org.selenidetask.desktop.elements;
 
 import com.codeborne.selenide.SelenideElement;
 import org.openqa.selenium.By;
@@ -9,10 +9,9 @@ import static com.codeborne.selenide.Selenide.$x;
 
 public class QuickNavigationForm {
 
-    private static final SelenideElement  catalogQuickNavigationLocator = $x("//ul[@class='catalog-navigation-classifier ']");
+    private static final SelenideElement catalogQuickNavigationLocator = $x("//ul[@class='catalog-navigation-classifier ']");
 
-    private String sectionTitleLocator = ".//*[contains(@class,'tem-title-wrapper')]";
-
+    private String sectionTitleLocator = ".//*[contains(@class,'item-title-wrapper')]";
 
 
     public boolean isItemExist(String navigationText) {
@@ -23,16 +22,16 @@ public class QuickNavigationForm {
         return getQuickNavigationElement(navigationText).isDisplayed();
     }
 
-     public void clickOnItem(String navigationText) {
-           getQuickNavigationElement(navigationText).click();
-       }
+    public void clickOnItem(String navigationText) {
+        getQuickNavigationElement(navigationText).click();
+    }
 
-    private SelenideElement getQuickNavigationElement(String navigationText){
+    private SelenideElement getQuickNavigationElement(String navigationText) {
         List<SelenideElement> elements;
         elements = catalogQuickNavigationLocator.$$(By.xpath(sectionTitleLocator));
         for (SelenideElement element : elements) {
             String texts = element.getText();
-            if (texts.equals(navigationText)){
+            if (texts.equals(navigationText)) {
                 return element;
             }
         }

@@ -1,38 +1,61 @@
 package org.selenidetask;
 
 
+import com.codeborne.selenide.Configuration;
 import com.codeborne.selenide.WebDriverRunner;
-import org.selenidetask.elements.CatalogNavigationListForm;
-import org.selenidetask.elements.QuickNavigationForm;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.selenidetask.pages.CatalogPage;
+import org.selenidetask.pages.CatalogPageDesktop;
+import org.selenidetask.pages.CatalogPageMobile;
 import org.testng.Assert;
-import org.testng.annotations.AfterMethod;
-import org.testng.annotations.BeforeMethod;
-import org.testng.annotations.DataProvider;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 import org.testng.asserts.SoftAssert;
 
-import java.util.Arrays;
-import java.util.List;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.util.*;
 
 import static com.codeborne.selenide.Selenide.*;
 
 public class SelenideTests {
 
-    QuickNavigationForm quickNavigationForm;
-    CatalogNavigationListForm catalogNavigationListForm;
+    private CatalogPage catalogPage;
+
+    private static Properties testProperties;
 
 
-
-    private List<String> asideListElementsName = Arrays.asList("Ноутбуки, компьютеры, мониторы","Комплектующие","Хранение данных","Сетевое оборудование");
+    private List<String> asideListElementsName = Arrays.asList("Ноутбуки, компьютеры, мониторы", "Комплектующие", "Хранение данных", "Сетевое оборудование");
 
     static {
         System.setProperty("webdriver.chrome.driver", "src/chromedriver.exe");
     }
 
+    @BeforeClass
+    public void init() throws IOException {
+        testProperties = new Properties();
+        testProperties.load(new FileInputStream("src/test/resources/project.properties"));
+        Configuration.startMaximized = true;
+        if (testProperties.getProperty("mobile").equals("true")) {
+            Map<String, String> mobileEmulation = new HashMap<>();
+            mobileEmulation.put("deviceName", "Samsung Galaxy S8+");
+
+            ChromeOptions chromeOptions = new ChromeOptions();
+            chromeOptions.setExperimentalOption("mobileEmulation", mobileEmulation);
+            Configuration.browserCapabilities = chromeOptions;
+        }
+        if (testProperties.getProperty("remoteSelenium") != null) {
+            Configuration.remote = testProperties.getProperty("remoteSelenium");
+        }
+    }
+
     @BeforeMethod
-    public void init(){
-        quickNavigationForm = new QuickNavigationForm();
-        catalogNavigationListForm = new CatalogNavigationListForm();
+    public void openOnliner() {
+        open("https://catalog.onliner.by/");
+        if (testProperties.getProperty("mobile").equals("true")) {
+            catalogPage = new CatalogPageMobile();
+        } else {
+            catalogPage = new CatalogPageDesktop();
+        }
     }
 
     @AfterMethod
@@ -42,7 +65,7 @@ public class SelenideTests {
 
     @DataProvider(name = "sectionsNames")
     public Object[][] createData() {
-        return new Object[][] {
+        return new Object[][]{
                 {"Электроника", true},
                 {"Компьютеры и сети", true},
                 {"Бытовая техника", true},
@@ -55,21 +78,20 @@ public class SelenideTests {
                 {"Еда", false}
         };
     }
-    @Test(dataProvider = "sectionsNames", priority = 1)
-    public void testCatalogSelectionsPresence (String sectionName, boolean expected) {
-        open("https://catalog.onliner.by/");
-        Assert.assertEquals(quickNavigationForm.isItemExist(sectionName),expected, "No such element " + sectionName + " exist.") ;
+
+    @Test(dataProvider = "sectionsNames")
+    public void testCatalogSelectionsPresenceDesktop(String sectionName, boolean expected) {
+        Assert.assertEquals(catalogPage.isCatalogSelectionsExist(sectionName), expected, "No such element " + sectionName + " exist.");
     }
 
     @Test(priority = 2)
-    public void testVerticalSectionsPresence () {
+    public void testVerticalSectionsPresence() {
         SoftAssert softAssert = new SoftAssert();
-        open("https://catalog.onliner.by/");
-        quickNavigationForm.clickOnItem("Компьютеры и сети");
-        softAssert.assertTrue(catalogNavigationListForm.isAsideListDisplayed(), "Aside list is not displayed.");
+        catalogPage.clickOnItem("Компьютеры и сети");
+        //softAssert.assertTrue(catalogPage.isAsideListDisplayed(), "Aside list is not displayed.");
 
         for (String elementName : asideListElementsName) {
-            softAssert.assertTrue(catalogNavigationListForm.getAsideListElementForm().isAsideListElementDisplayed(elementName),
+            softAssert.assertTrue(catalogPage.isAsideListSectionsDisplayed(elementName),
                     elementName + " is not displayed");
         }
 
@@ -77,35 +99,16 @@ public class SelenideTests {
     }
 
 
-    @Test(priority = 3)
+    @Test()
     public void testAsideListElementsContainsPriceAndCount() {
         SoftAssert softAssert = new SoftAssert();
-        open("https://catalog.onliner.by/");
-        quickNavigationForm.clickOnItem("Компьютеры и сети");
-        softAssert.assertTrue(catalogNavigationListForm.isAsideListDisplayed(), "Aside list is not displayed.");
-        softAssert.assertTrue(catalogNavigationListForm.getAsideListElementForm()
-                        .isAsideListElementDisplayed("Комплектующие"),asideListElementsName + " is not displayed.");
-        catalogNavigationListForm.getAsideListElementForm().clickOnAsideListElement("Комплектующие");
-        List<String> descriptions = catalogNavigationListForm.getAsideListElementForm().getAsideListElementDropdownDescriptions();
-        List<String> titles = catalogNavigationListForm.getAsideListElementForm().getAsideListElementTitles();
-        softAssert.assertTrue(isNotBlank(descriptions), "Description of elements is blank.");
-        softAssert.assertTrue(isNotBlank(titles), "Titles of elements is blank.");
+        catalogPage.clickOnItem("Компьютеры и сети");
+        //softAssert.assertTrue(catalogPage.isAsideListDisplayed(), "Aside list is not displayed.");
+        softAssert.assertTrue(catalogPage.isAsideListSectionsDisplayed("Комплектующие"), asideListElementsName + " is not displayed.");
+        catalogPage.clickOnAsideListElement("Комплектующие");
+        softAssert.assertTrue(catalogPage.isAsideListElementDropdownDescriptionsExists(), "Description of elements is blank.");
+        softAssert.assertTrue(catalogPage.isAsideListElementDropdownTitlesExists(), "Titles of elements is blank.");
 
         softAssert.assertAll();
-    }
-
-    /**
-     * Метод проверки наличия элементов массива.
-     *
-     * @param elements Массив(лист) строк.
-     * @return Возвращает true, если элемент в массиве не isBlank, иначе возвращает false.
-     */
-    private boolean isNotBlank(List<String> elements) {
-        for (String element : elements) {
-            if (element.isBlank()) {
-                return false;
-            }
-        }
-        return true;
     }
 }

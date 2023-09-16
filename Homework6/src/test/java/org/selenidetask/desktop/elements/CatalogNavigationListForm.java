@@ -1,4 +1,4 @@
-package org.selenidetask.elements;
+package org.selenidetask.desktop.elements;
 
 import com.codeborne.selenide.SelenideElement;
 
