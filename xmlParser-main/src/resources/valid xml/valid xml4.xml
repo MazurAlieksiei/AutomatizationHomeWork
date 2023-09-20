@@ -1,0 +1,8 @@
+<note>
+    <to>Tove</to>
+    <from>Jani</from>
+    <heading>Reminder</heading>
+    <message>salary &lt; 1000</message>
+    <body>Don't forget to increase salary me this weekend!</body>
+</note>
+
